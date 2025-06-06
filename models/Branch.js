@@ -1,7 +1,7 @@
 // models/Branch.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Gym = require('./Gym');
+const Gym = require('./gym');
 
 const Branch = sequelize.define('Branch', {
   name: {
@@ -14,7 +14,7 @@ const Branch = sequelize.define('Branch', {
 });
 
 // Relationships
-Branch.belongsTo(Gym);
-Gym.hasMany(Branch);
+Branch.belongsTo(Gym, { foreignKey: 'gymId', onDelete: 'CASCADE' });
+Gym.hasMany(Branch, { foreignKey: 'gymId' })
 
 module.exports = Branch;
