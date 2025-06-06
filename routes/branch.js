@@ -6,7 +6,7 @@ const authenticateToken = require('../middleware/authMiddleware');
 
 // Middleware to check admin or branch admin access
 const isAdmin = (req, res, next) => {
-  if (req.user.role !== 'admin') {
+  if (req.user.role !== 'super_admin') {
     return res.status(403).json({ message: 'Admin access required' });
   }
   next();
