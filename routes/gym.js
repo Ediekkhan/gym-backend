@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Gym = require('../models/gym');
 const authenticateToken = require('../middleware/authMiddleware');
+const gymController = require('../controllers/gymController');
 
 // Middleware to check if user is admin
 const isAdmin = (req, res, next) => {
@@ -11,62 +12,10 @@ const isAdmin = (req, res, next) => {
   next();
 };
 
-// GET all gyms (any logged-in user)
-router.get('/', authenticateToken, isAdmin, async (req, res) => {
-  const gyms = await Gym.findAll();
-  res.json(gyms);
-});
-
-// GET single gym by ID
-router.get('/:gymId', authenticateToken, async (req, res) => {
-  try {
-    const gym = await Gym.findByPk(req.params.gymId);
-    if (!gym) return res.status(404).json({ message: 'Gym not found' });
-    res.json(gym);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error fetching gym' });
-  }
-});
-
-router.post('/', authenticateToken, isAdmin, async (req, res) => {
-  const { name, description } = req.body;
-  try {
-    const gym = await Gym.create({ name, description });
-    res.status(201).json(gym);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// PUT update gym (admin only)
-router.put('/:gymId', authenticateToken, isAdmin, async (req, res) => {
-  try {
-    const gym = await Gym.findByPk(req.params.gymId);
-    if (!gym) return res.status(404).json({ message: 'Gym not found' });
-
-    const { name, description, location } = req.body;
-    gym.name = name || gym.name;
-    gym.description = description || gym.description;
-    gym.location = location || gym.location;
-
-    await gym.save();
-    res.json(gym);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error updating gym' });
-  }
-});
-
-// DELETE gym (admin only)
-router.delete('/:gymId', authenticateToken, isAdmin, async (req, res) => {
-  try {
-    const gym = await Gym.findByPk(req.params.gymId);
-    if (!gym) return res.status(404).json({ message: 'Gym not found' });
-
-    await gym.destroy();
-    res.json({ message: 'Gym deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error deleting gym' });
-  }
-});
+router.get('/', authenticateToken, gymController.getAllGyms);
+router.get('/:id', authenticateToken, gymController.getGymById);
+router.post('/', authenticateToken, isAdmin, gymController.createGym);
+router.put('/:id', authenticateToken, isAdmin, gymController.updateGym);
+router.delete('/:id', authenticateToken, isAdmin, gymController.deleteGym);
 
 module.exports = router;

@@ -1,7 +1,8 @@
-const Gym = require('../models/gym');
+// controllers/gymController.js
+const Gym  = require('../models/gym');
 
 // Get all gyms
-exports.getAllGyms = async (req, res) => {
+const getAllGyms = async (req, res) => {
   try {
     const gyms = await Gym.findAll();
     res.json(gyms);
@@ -11,7 +12,7 @@ exports.getAllGyms = async (req, res) => {
 };
 
 // Get gym by ID
-exports.getGymById = async (req, res) => {
+const getGymById = async (req, res) => {
   try {
     const gym = await Gym.findByPk(req.params.id);
     if (!gym) return res.status(404).json({ message: 'Gym not found' });
@@ -22,7 +23,7 @@ exports.getGymById = async (req, res) => {
 };
 
 // Create gym
-exports.createGym = async (req, res) => {
+const createGym = async (req, res) => {
   try {
     const { name, address, description } = req.body;
     const newGym = await Gym.create({ name, address, description });
@@ -33,7 +34,7 @@ exports.createGym = async (req, res) => {
 };
 
 // Update gym
-exports.updateGym = async (req, res) => {
+const updateGym = async (req, res) => {
   try {
     const gym = await Gym.findByPk(req.params.id);
     if (!gym) return res.status(404).json({ message: 'Gym not found' });
@@ -47,7 +48,7 @@ exports.updateGym = async (req, res) => {
 };
 
 // Delete gym
-exports.deleteGym = async (req, res) => {
+const deleteGym = async (req, res) => {
   try {
     const gym = await Gym.findByPk(req.params.id);
     if (!gym) return res.status(404).json({ message: 'Gym not found' });
@@ -57,4 +58,13 @@ exports.deleteGym = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
+};
+
+// Export them as named exports
+module.exports = {
+  getAllGyms,
+  getGymById,
+  createGym,
+  updateGym,
+  deleteGym,
 };
