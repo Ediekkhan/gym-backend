@@ -11,6 +11,13 @@ const Branch = sequelize.define('Branch', {
   address: {
     type: DataTypes.STRING,
   },
+  phone: {
+    type: DataTypes.STRING,
+  },
+  gymId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
 // Relationships

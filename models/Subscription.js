@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const User = require('./User');
-const Branch = require('./Branch');
+const Branch = require('./branch');
 
 const Subscription = sequelize.define('Subscription', {
   startDate: {
