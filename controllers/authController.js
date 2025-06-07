@@ -52,6 +52,27 @@ const login = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
-};
 
-module.exports = { register, login };
+  // const getProfile = async (req, res) => {
+  //   try {
+  //     const user = await User.findByPk(req.user.id, {
+  //       attributes: { exclude: ['password'] },
+  //     });
+  //     if (!user) return res.status(404).json({ message: 'User not found' });
+
+  //     res.status(200).json({ user });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({ message: 'Server error' });
+  //   }
+  // };
+
+  // // For logout, typically you can just instruct the client to delete the token.
+  // // But to be explicit:
+  // const logout = (req, res) => {
+  //   res.clearCookie("TOKEN").status(200).json({ message: "Logout successfull" });
+  //   // res.status(200).json({ message: 'Logged out successfully' });
+  // };
+}
+
+module.exports = { register, login  };
